@@ -64,7 +64,7 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
   const page = await browser.newPage();
 
   page.setViewport({width: VP_W, height: VP_H});
-  page.setDefaultNavigationTimeout(engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT));
+  // page.setDefaultNavigationTimeout(engineTools.getEngineOption(config, 'waitTimeout', TEST_TIMEOUT));
 
   if (isReference) {
     console.log(chalk.blue('CREATING NEW REFERENCE FILE'));
@@ -79,15 +79,15 @@ async function processScenarioView (scenario, variantOrScenarioLabelSafe, scenar
     });
   }
 
-  page.on('console', msg => {
-    for (let i = 0; i < msg.args().length; ++i) {
-      const line = msg.args()[i];
-      console.log(`Browser Console Log ${i}: ${line}`);
-      if (readyEvent && new RegExp(readyEvent).test(line)) {
-        readyResolve();
-      }
-    }
-  });
+  // page.on('console', msg => {
+  //   for (let i = 0; i < msg.args().length; ++i) {
+  //     const line = msg.args()[i];
+  //     console.log(`Browser Console Log ${i}: ${line}`);
+  //     if (readyEvent && new RegExp(readyEvent).test(line)) {
+  //       readyResolve();
+  //     }
+  //   }
+  // });
 
   let chromeVersion = await page.evaluate(_ => {
     let v = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
