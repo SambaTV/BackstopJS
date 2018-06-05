@@ -5,8 +5,8 @@ var fs = require('./fs');
 var each = require('./each');
 var pMap = require('p-map');
 
-var runCasper = require('./runCasper');
-var runChromy = require('./runChromy');
+// var runCasper = require('./runCasper');
+// var runChromy = require('./runChromy');
 var runPuppet = require('./runPuppet');
 
 const ensureDirectoryPath = require('./ensureDirectoryPath');
@@ -184,29 +184,29 @@ module.exports = function (config, isReference) {
         return writeCompareConfigFile(config.tempCompareConfigFileName, result);
       });
 
-    if (/chrom./i.test(config.engine)) {
-      promise.then(() => Chromy.cleanup());
-    }
+    // if (/chrom./i.test(config.engine)) {
+    //   promise.then(() => Chromy.cleanup());
+    // }
 
     return promise;
   }
 
-  return writeReferenceCreateConfig(config, isReference).then(function () {
-    var tests = [path.join(config.backstop, GENERATE_BITMAPS_SCRIPT)];
-    var casperChild = runCasper(config, tests);
-    return new Promise(function (resolve, reject) {
-      casperChild.on('close', function (code) {
-        var success = code === 0; // Will be 1 in the event of failure
-        var result = (success) ? 'Bitmap file generation completed.' : 'Testing script failed with code: ' + code;
-        console.log('\n' + result);
-        // exit if there was some kind of failure in the casperChild process
-        if (code !== 0) {
-          console.log('\nAn unexpected error occurred. You may want to try setting the debug option to `true` in your config file.');
-          reject(new Error('An unexpected error occurred. You may want to try setting the debug option to `true` in your config file.'));
-          return;
-        }
-        resolve();
-      });
-    });
-  });
+  // return writeReferenceCreateConfig(config, isReference).then(function () {
+  //   var tests = [path.join(config.backstop, GENERATE_BITMAPS_SCRIPT)];
+  //   var casperChild = runCasper(config, tests);
+  //   return new Promise(function (resolve, reject) {
+  //     casperChild.on('close', function (code) {
+  //       var success = code === 0; // Will be 1 in the event of failure
+  //       var result = (success) ? 'Bitmap file generation completed.' : 'Testing script failed with code: ' + code;
+  //       console.log('\n' + result);
+  //       // exit if there was some kind of failure in the casperChild process
+  //       if (code !== 0) {
+  //         console.log('\nAn unexpected error occurred. You may want to try setting the debug option to `true` in your config file.');
+  //         reject(new Error('An unexpected error occurred. You may want to try setting the debug option to `true` in your config file.'));
+  //         return;
+  //       }
+  //       resolve();
+  //     });
+  //   });
+  // });
 };
