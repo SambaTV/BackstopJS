@@ -1,4 +1,4 @@
-const Chromy = require('chromy');
+// const Chromy = require('chromy');
 var cloneDeep = require('lodash/cloneDeep');
 var path = require('path');
 var fs = require('./fs');
@@ -123,17 +123,7 @@ function delegateScenarios (config) {
 
   const asyncCaptureLimit = config.asyncCaptureLimit === 0 ? 1 : config.asyncCaptureLimit || CONCURRENCY_DEFAULT;
 
-  if (/chrom./i.test(config.engine)) {
-    const PORT = (config.startingPort || CHROMY_STARTING_PORT_NUMBER);
-    var getFreePorts = require('./getFreePorts');
-    return getFreePorts(PORT, scenarioViews.length).then(freeports => {
-      console.log('These ports will be used:', JSON.stringify(freeports));
-      scenarioViews.forEach((scenarioView, i) => {
-        scenarioView.assignedPort = freeports[i];
-      });
-      return pMap(scenarioViews, runChromy, {concurrency: asyncCaptureLimit});
-    });
-  } else if (config.engine.startsWith('puppet')) {
+  if (config.engine.startsWith('puppet')) {
     return pMap(scenarioViews, runPuppet, {concurrency: asyncCaptureLimit});
   } else {
     logger.error('Engine not known to Backstop!');
